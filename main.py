@@ -8,7 +8,6 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 hate_speech_classifier = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)
 
 hate_speech_classifier.load_state_dict(torch.load('hate_classifier.pt'))
-print('elo')
 
 def tokenize_function(data):
     return tokenizer(data, padding=True, truncation=True)
@@ -22,7 +21,6 @@ def is_hate_speech(text):
     with torch.no_grad():
         result = hate_speech_classifier(**batch).logits
         prediction = torch.argmax(result, dim=-1)
-        print(prediction)
     if prediction.item() == 0:
         return False
     return True
